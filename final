@@ -1,0 +1,62 @@
+int relay = 6;
+int ir = 7;
+char bt = '0';
+int counter = 1;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(relay, OUTPUT);
+  pinMode(ir, INPUT);
+}
+
+void loop() {
+  while (Serial.available() == 0) {
+    Serial.print(Serial.available());
+    int IR = digitalRead(ir);
+    if (digitalRead(ir) == 0) {
+      if (counter == 1) {
+
+        digitalWrite(relay, HIGH);
+        delay(1000);
+        counter++;
+        Serial.print(ir);
+        Serial.print("on");
+      } else {
+        digitalWrite(relay, LOW);
+        delay(1000);
+        counter = 1;
+        Serial.print("off");
+      }
+    }
+  }
+  /* if (digitalRead(ir) == 1) {
+    digitalWrite(relay, LOW);
+  }*/
+
+  bt = Serial.read();
+  if (bt == 'a') {
+    digitalWrite(relay, HIGH);
+  }
+
+
+  else if (bt == 'b') {
+    digitalWrite(relay, LOW);
+  }
+
+  else if (bt == 'o') {
+    digitalWrite(relay, HIGH);
+  }
+
+
+  else if (bt == 'z') {
+    digitalWrite(relay, LOW);
+  }
+
+  else {
+    digitalWrite(relay, LOW);
+    Serial.print('wrong num');
+  }
+
+  Serial.print("Done BT");
+  Serial.println(digitalRead(ir));
+}
